@@ -1,0 +1,12 @@
+FROM ubuntu
+
+ARG DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update && apt-get install curl postgresql-client python3 awscli osm2pgrouting osmctools wget postgis unzip -y 
+
+COPY ./scripts/data_loader.sh /data/scripts/data_loader.sh
+COPY ./scripts/vector_tile_functions.sql /data/scripts/vector_tile_functions.sql
+
+RUN ls /data/scripts
+
+WORKDIR /data/scripts

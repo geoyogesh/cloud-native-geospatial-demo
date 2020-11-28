@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>Display a map</title>
+<meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+<script src="https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.js"></script>
+<link href="https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css" rel="stylesheet" />
+<style>
+	body { margin: 0; padding: 0; }
+	#map { position: absolute; top: 0; bottom: 0; width: 100%; }
+</style>
+</head>
+<body>
+<div id="map"></div>
+<script>
+	mapboxgl.accessToken = 'pk.eyJ1IjoiZ2VveW9nZXNoIiwiYSI6ImNpbDFvaGFocjNhbmN1Z20zN2V2ajc1ejIifQ.y1AvSabUgTs0OrQnqiDbOw';
+var map = new mapboxgl.Map({
+container: 'map', // container id
+style: 'mapbox://styles/mapbox/streets-v11', // style URL
+center: [-74.5, 40], // starting position [lng, lat]
+zoom: 3 // starting zoom
+});
+// Add zoom and rotation controls to the map.
+map.addControl(new mapboxgl.NavigationControl());
+
+map.on('load', function () {
+
+    map.addSource('opendata.counties', {
+maxzoom: 22,
+minzoom: 0,
+tiles: ["http://localhost:8000/opendata.counties/{z}/{x}/{y}.pbf"],
+type: "vector"
+});
+map.addLayer({
+'id': 'opendata.counties.Polygon.fill',
+'type': 'fill',
+'source': 'opendata.counties',
+'source-layer': 'opendata.counties',
+'paint': {'fill-color': "blue", 'fill-outline-color': "blue", 'fill-opacity': 0.1},
+'filter': ["match", ["geometry-type"], ["Polygon", "MultiPolygon"], true, false]
+});
+
+map.addLayer({
+'id': 'opendata.counties.Polygon.line',
+'type': 'line',
+'source': 'opendata.counties',
+'source-layer': 'opendata.counties',
+'paint': {'line-color': "blue", 'line-width': 1.5},
+'filter': ["match", ["geometry-type"], ["Polygon", "MultiPolygon"], true, false]
+});
+
+
+});
+
+</script>
+ 
+</body>
+</html>
