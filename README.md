@@ -7,13 +7,22 @@
 - Zarr
 
 
-
 ### Mapbox Vector Tiles
-- GDAL
-- Tippecanoe
-- PostGIS + Dynamic Vector tile generation
-- mvtview (https://github.com/mapbox/mvtview) - Test generated Vector tile
+- Pregenerate Vector Tiles
+	- GDAL with MVT Plugin
+	- Tippecanoe
+- Generate Dynamic Vector Tiles
+	- PostGIS + Dynamic Vector tile generation
+		- pg_tileserv (https://github.com/CrunchyData/pg_tileserv)
+		- Custom api implementation
 
+mvtview (https://github.com/mapbox/mvtview) - Test generated Vector tile
+
+Notes:
+	- Use gzip compression to serve vector tiles
+	- Choose right HTTP Caching strategy based on usecase
+	- To cut down the tiling time choose appropriate number of tile levels (Pregenerate Vector Tiles)
+	- To improve user experience Push lower tile levels first to object storage (Pregenerate Vector Tiles)
 
 ## Catalog
 - OGC Spatio Temporal Asset Catalog
