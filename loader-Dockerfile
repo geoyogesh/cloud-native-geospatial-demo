@@ -1,0 +1,23 @@
+FROM ubuntu
+
+ARG DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update && \
+    apt-get install -y software-properties-common && \
+    rm -rf /var/lib/apt/lists/*
+
+RUN apt-get update && apt-get install curl postgresql-client python3 awscli osm2pgrouting osmctools wget postgis unzip gdal-bin parallel -y 
+
+RUN git clone https://github.com/mapbox/tippecanoe.git && \
+        cd tippecanoe && \
+        make && \
+        make install
+
+COPY ./scripts/data_loader.sh /data/scripts/data_loader.sh
+
+RUN ls /data/scripts
+
+WORKDIR /data/scripts
+
+RUN wget https://dl.minio.io/client/mc/release/linux-amd64/mc --quiet
+RUN chmod +x mc
